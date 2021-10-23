@@ -50,17 +50,17 @@
       </div>
       </div>
       <div class="bar-chart">
-    <bar-chart :chartData="chartData" :options="options"></bar-chart>
     </div>
+    <graph/>
     </div>
 </template>
 
 <script>
-import BarChart from '@/components/BarChart';
+import Graph from '../components/Graph.vue';
 
 export default {
-  components: {
-    BarChart
+  components:{
+    Graph
   },
   data() {
     return {
@@ -71,28 +71,6 @@ export default {
       amountOne: 1,
       amountTwo: 0,
       amountTwoF:0,
-      chartData: {labels: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ],
-    datasets: [
-      {
-        label: 'BTC price',
-        data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11]
-      }
-    ]},
-      options: {responsive: true,
-    maintainAspectRatio: false}
     };
   },
 
