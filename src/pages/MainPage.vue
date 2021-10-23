@@ -49,12 +49,19 @@
         />
       </div>
       </div>
+      <div class="bar-chart">
+    <bar-chart :chartData="chartData" :options="options"></bar-chart>
+    </div>
     </div>
 </template>
 
 <script>
+import BarChart from '@/components/BarChart';
+
 export default {
-  components: {},
+  components: {
+    BarChart
+  },
   data() {
     return {
       data: [],
@@ -64,20 +71,41 @@ export default {
       amountOne: 1,
       amountTwo: 0,
       amountTwoF:0,
+      chartData: {labels: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ],
+    datasets: [
+      {
+        label: 'BTC price',
+        data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11]
+      }
+    ]},
+      options: {responsive: true,
+    maintainAspectRatio: false}
     };
   },
 
   methods: {
     calculateResults() {
       fetch(
-        `https://min-api.cryptocompare.com/data/price?fsym=${this.currency_one}&tsyms=BTC,ETH,EUR,RUB`
+        `https://min-api.cryptocompare.com/data/price?fsym=${this.currency_one}&tsyms=BTC,ETH,EUR,RUB,USD`
       )
         .then((res) => res.json())
         .then((data) => {
           this.data = data;
           this.rate = data[this.currency_two];
           this.amountTwo = this.amountOne * this.rate
-          console.log(this.amountTwo);
           this.amountTwoF = this.amountTwo.toFixed(7)
         });
     },

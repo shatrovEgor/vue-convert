@@ -3,22 +3,29 @@
     <navbar></navbar>
     <router-view></router-view>
     <graph/>
-    <bar-chart></bar-chart>
+    <div class="bar-chart">
+    </div>
        </v-app>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar"
 import Graph from './components/Graph';
-import BarChart from './components/BarChart.vue';
 
 export default {
   name: 'App',
   components: {
     Navbar,
     Graph,
-    BarChart
   }
 
 };
 </script>
+
+<style>
+.bar-chart {
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
