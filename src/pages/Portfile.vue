@@ -2,7 +2,7 @@
     <div class="app">
         <div class="container1">
             <h1>Ваш портфель:</h1>
-            <div class="btc">
+            <div class="btc" @click="showModal">
                 <img src="./bitcoin.png" alt="" class="img">
                 <p>Bitcoin</p>
                 <v-spacer></v-spacer>
@@ -10,33 +10,44 @@
     
                 
             </div>
-            <div class="btc">
+            <div class="btc" @click="showModalEth">
                 <img src="./ethereum.png" alt="" class="img">
                 <p>Ethereum</p>
                 <v-spacer></v-spacer>
                 <p>Balance: {{balanceEth}}</p>
             </div>
+            <div class="sum">
             <h2>Стоимость портфеля: {{calcSum()}}</h2>
+            </div>
         </div>
            <div class="graph">
                {{calcGrah()}}
         <line-chart :chartData="chartData" :options="options"></line-chart>
         </div>
+        <modal-window ref="modal" :value="balanceBtc" :price="priceBtc"></modal-window>
+        <modal-window-eth ref="modal1" :value="balanceEth" :price="priceEth"></modal-window-eth>
     </div>
 </template>
 
 <script>
 
 import LineChart from '../components/LineChart.vue';
+import ModalWindow from '../components/ModalWindow.vue';
+import ModalWindowEth from '../components/ModalWindowEth.vue';
 
 export default {
     components: {
-        LineChart
+        LineChart,
+        ModalWindow,
+        ModalWindowEth
     },
     data() {
         return{
-            balanceBtc: 0.2,
-            balanceEth: 1.7, 
+            balanceBtc: 0.253,
+            priceBtc: 0,
+            balanceEth: 1.71,
+            priceEth: 0,
+            sum: 0, 
             data:[],
             chartData: {labels: [
             "BTC",
@@ -69,15 +80,24 @@ export default {
         },
 
         calcSum() {
-            let sum = 0
-            sum = this.balanceBtc / this.data.BTC + this.balanceEth / this.data.ETH
-            return sum.toFixed(2) + '$'
+            this.sum = this.balanceBtc / this.data.BTC + this.balanceEth / this.data.ETH
+            let priceBtcF = this.balanceBtc / this.data.BTC
+            this.priceBtc = priceBtcF.toFixed(2) + '$'
+            let priceEthF = this.balanceEth / this.data.ETH
+            this.priceEth = priceEthF.toFixed(2) + '$'
+            return this.sum.toFixed(2) + '$'
         },
         calcGrah() {
             const arr = [0,0,0]
             arr[0] = this.balanceBtc
             arr[1] = this.balanceEth
             this.chartData.datasets[0].data = arr
+        },
+        showModal: function () {
+                this.$refs.modal.show = true
+            },
+        showModalEth: function () {
+            this.$refs.modal1.show = true
         }
 
     },
@@ -105,11 +125,16 @@ export default {
 .container1 h1{
     margin-left: 20px;
 }
-.container1 h2 {
+.sum {
+    display: flex;
     position: absolute;
     bottom: 7px;
     left: 10px;
     
+}
+.sum button {
+    border: 1px solid brown;
+    margin-left: 20px;
 }
 .btc{
     display: flex;
@@ -140,6 +165,11 @@ export default {
     margin-left: auto;
     margin-right: auto;
 
+}
+.show-modal-button{
+    width: 100px;
+    height: 100px;
+    background-color: brown;
 }
 
 
