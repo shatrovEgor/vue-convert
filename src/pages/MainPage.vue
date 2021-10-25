@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <h1 class="header">VueJs Currency Exchange App</h1>
-    <div class="container">
+    <div class="containerr">
+      <h1 class="header">VueJs Currency Exchange App</h1>
       <div class="container-one">
         <select
           name="first-currency"
@@ -51,16 +51,21 @@
       </div>
       <div class="bar-chart">
     </div>
+    
     <graph/>
+    <graph-eth></graph-eth>
+  
     </div>
 </template>
 
 <script>
 import Graph from '../components/Graph.vue';
+import GraphEth from '../components/GraphEth.vue';
 
 export default {
   components:{
-    Graph
+    Graph,
+    GraphEth
   },
   data() {
     return {
@@ -139,6 +144,13 @@ export default {
     justify-content: center;
     width: 50%;
     justify-content: space-evenly;
-    margin: 20px 30px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+}
+.containerr {
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

@@ -44,7 +44,7 @@ export default {
     ],
     datasets: [
       {
-        label: 'BTC price',
+        label: 'ETH price',
         data: ["54808.3", "55213.3", "56706.2", "56642.5", "56052.3", "57638.6", "59863.1", "61264.7", "60840.3", "61789.9", "62724.1", "64947.4", "64355.7", "62189.1"]
       }
     ]},
@@ -89,7 +89,7 @@ methods:{
 },
 mounted(){
 this.axios
-  .get('https://api.coincap.io/v2/assets/bitcoin/history?interval=d1')
+  .get('https://api.coincap.io/v2/assets/ethereum/history?interval=d1')
   .then(response => (this.info = response.data.data))
 }
 

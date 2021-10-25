@@ -6,7 +6,7 @@
                 <img src="./bitcoin.png" alt="" class="img">
                 <p>Bitcoin</p>
                 <v-spacer></v-spacer>
-                <p>Balance: {{balanceBtc}}</p>
+                <p>Balance: {{this.$store.state.valueBtc}}</p>
     
                 
             </div>
@@ -14,18 +14,20 @@
                 <img src="./ethereum.png" alt="" class="img">
                 <p>Ethereum</p>
                 <v-spacer></v-spacer>
-                <p>Balance: {{balanceEth}}</p>
+                <p>Balance: {{this.$store.state.valueEth}}</p>
             </div>
+            {{calcPriceEth()}}
+            {{calcPriceBtc()}}
             <div class="sum">
             <h2>Стоимость портфеля: {{calcSum()}}</h2>
             </div>
         </div>
            <div class="graph">
-               {{calcGrah()}}
+               {{calcGraph()}}
         <line-chart :chartData="chartData" :options="options"></line-chart>
         </div>
-        <modal-window ref="modal" :value="balanceBtc" :price="priceBtc"></modal-window>
-        <modal-window-eth ref="modal1" :value="balanceEth" :price="priceEth"></modal-window-eth>
+        <modal-window ref="modal" :price="priceBtc"></modal-window>
+        <modal-window-eth ref="modal1" :price="priceEth"></modal-window-eth>
     </div>
 </template>
 
@@ -43,9 +45,9 @@ export default {
     },
     data() {
         return{
-            balanceBtc: 0.253,
+            balanceBtc: this.$store.state.valueBtc,
             priceBtc: 0,
-            balanceEth: 1.71,
+            balanceEth: this.$store.state.valueEth,
             priceEth: 0,
             sum: 0, 
             data:[],
@@ -78,31 +80,39 @@ export default {
           this.data = data;
         });
         },
+        calcGraph() {
+            const arr = [0,0,0]
+            arr[0] = this.$store.state.valueBtc
+            arr[1] = this.$store.state.valueEth
+            this.chartData.datasets[0].data = arr
+        },
 
         calcSum() {
-            this.sum = this.balanceBtc / this.data.BTC + this.balanceEth / this.data.ETH
-            let priceBtcF = this.balanceBtc / this.data.BTC
-            this.priceBtc = priceBtcF.toFixed(2) + '$'
-            let priceEthF = this.balanceEth / this.data.ETH
-            this.priceEth = priceEthF.toFixed(2) + '$'
+            this.sum = this.$store.state.valueBtc / this.data.BTC + this.$store.state.valueEth / this.data.ETH
             return this.sum.toFixed(2) + '$'
-        },
-        calcGrah() {
-            const arr = [0,0,0]
-            arr[0] = this.balanceBtc
-            arr[1] = this.balanceEth
-            this.chartData.datasets[0].data = arr
         },
         showModal: function () {
                 this.$refs.modal.show = true
             },
         showModalEth: function () {
             this.$refs.modal1.show = true
-        }
-
+        },
+        calcBalance() {
+            this.balanceBtc = this.$store.state.valueBtc
+            this.balanceEth = this.$store.state.valueEth
+        },
+        calcPriceEth() {
+            let buf= this.$store.state.valueEth / this.data.ETH
+            this.priceEth =buf.toFixed(2)
+        },
+        calcPriceBtc() {
+            let buf= this.$store.state.valueBtc / this.data.BTC
+            this.priceBtc =buf.toFixed(2)
+        },
     },
      mounted() {
-    this.calculateResults();
+        this.calcBalance();
+        this.calculateResults();
   }
     
 }
